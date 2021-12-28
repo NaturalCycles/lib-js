@@ -1,4 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+import { AnyFunction } from '../types'
+
 export function convertHrtime(hrtime: [number, number]) {
   const nanoseconds = hrtime[0] * 1e9 + hrtime[1]
   const milliseconds = nanoseconds / 1e6
@@ -21,4 +23,12 @@ export function timeSpan(): () => number {
   ret.nanoseconds = () => end('nanoseconds')
 
   return ret
+}
+
+export function testEach(cases: any[][]): (name: string, fn: AnyFunction) => void {
+  return (name, fn) => {
+    cases.forEach(items => {
+      test(name, () => fn(...items))
+    })
+  }
 }

@@ -1,6 +1,7 @@
+import { testEach } from '../test/test.util'
 import { _parseQueryString } from './url.util'
 
-test.each([
+testEach([
   ['', {}],
   ['?a', { a: '' }],
   ['a', { a: '' }],

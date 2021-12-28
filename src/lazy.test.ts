@@ -1,7 +1,7 @@
 import { _defineLazyProperty, _defineLazyProps, _lazyValue } from './lazy'
 
 test('_lazyValue', () => {
-  const fn = jest.fn(() => 42)
+  const fn = vi.fn(() => 42)
 
   const value = _lazyValue(fn)
   expect(value()).toBe(42)
@@ -16,7 +16,7 @@ interface Obj {
 }
 
 test('_defineLazyProperty', () => {
-  const fn = jest.fn(() => 42)
+  const fn = vi.fn(() => 42)
 
   const obj = {} as Obj
 
@@ -35,8 +35,8 @@ test('_defineLazyProperty', () => {
 })
 
 test('_defineLazyProps', () => {
-  const fn1 = jest.fn(() => 42)
-  const fn2 = jest.fn(() => 48)
+  const fn1 = vi.fn(() => 42)
+  const fn2 = vi.fn(() => 48)
 
   interface Obj2 {
     v1: number

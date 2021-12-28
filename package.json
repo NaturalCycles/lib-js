@@ -19,6 +19,8 @@
     "patch-package": "^6.2.1",
     "prettier": "^2.1.2",
     "rxjs": "^7.0.1",
+    "vite": "^2.7.7",
+    "vitest": "^0.0.115",
     "vuepress": "^1.7.1",
     "vuepress-plugin-typescript": "^0.3.1",
     "weak-napi": "^2.0.2"

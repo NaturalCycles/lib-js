@@ -1,3 +1,4 @@
+import { pExpectedError } from '../error/try'
 import { pDefer } from './pDefer'
 import { pDelay } from './pDelay'
 import { pProps } from './pProps'
@@ -26,12 +27,12 @@ test('main', async () => {
 })
 
 test('rejects if any of the input promises reject', async () => {
-  await expect(
+  expect(await pExpectedError(
     pProps({
       foo: Promise.resolve(1),
       bar: Promise.reject(new Error('bar')),
-    }),
-  ).rejects.toThrow('bar')
+    })),
+  ).toMatchInlineSnapshot('[Error: bar]')
 })
 
 test('handles empty object', async () => {

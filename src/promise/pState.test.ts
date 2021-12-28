@@ -1,3 +1,4 @@
+import { pExpectedError } from '../error/try'
 import { pDefer } from './pDefer'
 import { pDelay } from './pDelay'
 import { pState } from './pState'
@@ -24,5 +25,5 @@ test('rejected', async () => {
   await pDelay(100)
   p.reject(new Error('bad'))
   expect(await pState(p)).toBe('rejected')
-  await expect(p).rejects.toThrowError('bad')
+  expect(await pExpectedError(p)).toMatchInlineSnapshot('[Error: bad]')
 })

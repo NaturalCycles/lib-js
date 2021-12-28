@@ -1,5 +1,6 @@
 import { _percentiles, _range } from '..'
 import { _mapToObject } from '../array/array.util'
+import { testEach } from '../test/test.util'
 import { _average, _averageWeighted, _median, _percentile } from './math.util'
 
 const numbers = [
@@ -18,7 +19,7 @@ const numbers = [
   10 / 3,
 ]
 
-test.each([
+testEach([
   [[1], 1],
   [[1, 2], 1.5],
   [[1, 2, 3], 2],
@@ -38,7 +39,7 @@ test('_averageWeighted', () => {
   expect(_averageWeighted(numbers, weights)).toBe(39.25869391025641)
 })
 
-test.each([
+testEach([
   [[1], 50, 1],
   [[1, 2], 50, 1.5],
   [[1, 3], 50, 2],
@@ -67,20 +68,19 @@ test('_percentile', () => {
 
   // console.log(pcs)
   expect(pcs).toMatchInlineSnapshot(`
-    Object {
-      "0": 1200,
-      "10": 1220,
-      "100": 1400,
-      "20": 1240,
-      "30": 1260,
-      "40": 1280,
-      "50": 1300,
-      "60": 1320,
-      "70": 1340,
-      "80": 1360,
-      "90": 1380,
-    }
-  `)
+{
+  "0": 1200,
+  "10": 1220,
+  "100": 1400,
+  "20": 1240,
+  "30": 1260,
+  "40": 1280,
+  "50": 1300,
+  "60": 1320,
+  "70": 1340,
+  "80": 1360,
+  "90": 1380,
+}`)
 })
 
 test('_percentiles', () => {
@@ -88,12 +88,11 @@ test('_percentiles', () => {
 
   const pcs = _percentiles(numbers, [50, 90, 99])
   expect(pcs).toMatchInlineSnapshot(`
-    Object {
-      "50": 1300,
-      "90": 1380,
-      "99": 1398,
-    }
-  `)
+{
+  "50": 1300,
+  "90": 1380,
+  "99": 1398,
+}`)
 })
 
 test('_median', () => {

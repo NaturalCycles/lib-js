@@ -6,10 +6,10 @@ export interface LoaderDecoratorParams {
   type: string
 }
 
-const beforeFn = jest.fn()
-const thenFn = jest.fn(r => r.res)
-const catchFn = jest.fn()
-const finallyFn = jest.fn()
+const beforeFn = vi.fn()
+const thenFn = vi.fn(r => r.res)
+const catchFn = vi.fn()
+const finallyFn = vi.fn()
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const DummyDecorator = () =>

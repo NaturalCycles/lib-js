@@ -1,4 +1,5 @@
 import { _inRange, _randomInt, _range, _sortNumbers } from '../index'
+import { testEach } from '../test/test.util'
 import { _clamp, _randomArrayItem, _round, _toFixed, _toPrecision } from './number.util'
 
 test('_randomInt', () => {
@@ -21,7 +22,7 @@ test('_randomArrayItem', () => {
   })
 })
 
-test.each([
+testEach([
   [2, 1, 3, true],
   [2, 2, 3, true],
   [2, 2, 1, false],
@@ -31,7 +32,7 @@ test.each([
   expect(_inRange(n, minIncl, maxExcl)).toBe(result)
 })
 
-test.each([
+testEach([
   [1634, 1000, 2000],
   [1634, 500, 1500],
   [1634, 100, 1600],
@@ -49,7 +50,7 @@ test.each([
   expect(_round(n, precisionUnit)).toBe(result)
 })
 
-test.each([
+testEach([
   [0.1604, 1, 0.2],
   [0.1604, 2, 0.16],
   [0.1604, 3, 0.16],
@@ -59,7 +60,7 @@ test.each([
   expect(_toFixed(n, fractionDigits)).toBe(result)
 })
 
-test.each([
+testEach([
   [1634, 1, 2000],
   [1634, 2, 1600],
   [1634, 3, 1630],
@@ -73,7 +74,7 @@ test.each([
   expect(_toPrecision(n, precision)).toBe(result)
 })
 
-test.each([
+testEach([
   [[], []],
   [[3], [3]],
   [
@@ -104,7 +105,7 @@ test.each([
   expect(_sortNumbers(numbers)).toEqual(result)
 })
 
-test.each([
+testEach([
   [3, 5, 10, 5],
   [4, 5, 10, 5],
   [5, 5, 10, 5],

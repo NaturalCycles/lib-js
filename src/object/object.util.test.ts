@@ -1,4 +1,5 @@
 import { deepFreeze } from '@naturalcycles/dev-lib/dist/testing'
+import { testEach } from '../test/test.util'
 import { StringMap } from '../types'
 import {
   _deepCopy,
@@ -118,13 +119,12 @@ test('_mask', () => {
   deepFreeze(o)
   const r = _mask(o, ['b.c'])
   expect(r).toMatchInlineSnapshot(`
-    Object {
-      "a": "1",
-      "b": Object {
-        "d": "1",
-      },
-    }
-  `)
+{
+  "a": "1",
+  "b": {
+    "d": "1",
+  },
+}`)
 
   // should not fail
   expect(_mask(o, ['c.0.0'])).toEqual(o)
@@ -143,16 +143,15 @@ test('_mask with mutation', () => {
   }
   const r = _mask(o, ['b.c'], true)
   expect(r).toMatchInlineSnapshot(`
-    Object {
-      "a": "1",
-      "b": Object {
-        "d": "1",
-        "e": Object {
-          "f": 7,
-        },
-      },
-    }
-  `)
+{
+  "a": "1",
+  "b": {
+    "d": "1",
+    "e": {
+      "f": 7,
+    },
+  },
+}`)
   expect(r.b).toEqual(o.b) // cause it will mutate r.b
   expect(r).toBe(o)
 })
@@ -265,7 +264,7 @@ test('_filterEmptyArrays', () => {
   expect(_filterEmptyArrays({ a: 'a', b: [], c: 'c' })).toEqual({ a: 'a', c: 'c' })
 })
 
-test.each([
+testEach([
   [undefined, true],
   [null, true],
   ['', true],
@@ -407,37 +406,34 @@ test('_merge', () => {
   }
 
   expect(_merge(a1, a2)).toMatchInlineSnapshot(`
-    Object {
-      "b": Object {
-        "c": "c1",
-        "c2": "c2",
-      },
-      "d": "d2",
-      "e": "e1",
-    }
-  `)
+{
+  "b": {
+    "c": "c1",
+    "c2": "c2",
+  },
+  "d": "d2",
+  "e": "e1",
+}`)
 
   const b1 = {}
   expect(_merge(b1, a2)).toMatchInlineSnapshot(`
-    Object {
-      "b": Object {
-        "c2": "c2",
-      },
-      "d": "d2",
-    }
-  `)
+{
+  "b": {
+    "c2": "c2",
+  },
+  "d": "d2",
+}`)
 
   expect(_merge({ a: 'a1', o: { oo: 'oo1' } }, { b: 'b1' }, { o: { z: 'z1' } }, { a: 'a2' }))
     .toMatchInlineSnapshot(`
-    Object {
-      "a": "a2",
-      "b": "b1",
-      "o": Object {
-        "oo": "oo1",
-        "z": "z1",
-      },
-    }
-  `)
+{
+  "a": "a2",
+  "b": "b1",
+  "o": {
+    "oo": "oo1",
+    "z": "z1",
+  },
+}`)
 })
 
 test('_invert', () => {
@@ -467,11 +463,11 @@ test('_invertMap', () => {
   expect(_invertMap(o)).toEqual(inv)
 })
 
-test.each([[undefined], [null], [1], [true], ['hello']] as any[])('isPrimitive "%s"', v => {
+testEach([[undefined], [null], [1], [true], ['hello']] as any[])('isPrimitive "%s"', v => {
   expect(_isPrimitive(v)).toBe(true)
 })
 
-test.each([[[]], [{}], [() => {}]] as any[])('!isPrimitive "%s"', v => {
+testEach([[[]], [{}], [() => {}]] as any[])('!isPrimitive "%s"', v => {
   expect(_isPrimitive(v)).toBe(false)
 })
 

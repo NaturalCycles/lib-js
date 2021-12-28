@@ -1,4 +1,4 @@
-import { _inRange, _randomInt, _range, AsyncMapper, END, ErrorMode, SKIP } from '..'
+import { _inRange, _randomInt, _range, AsyncMapper, END, ErrorMode, pExpectedError, SKIP } from '..'
 import { timeSpan } from '../test/test.util'
 import { AggregatedError } from './AggregatedError'
 import { pBatch } from './pBatch'
@@ -91,12 +91,12 @@ test('reject', async () => {
     if (!v) throw new Error('Err')
     return v
   }
-  await expect(pMap(input, mapper, { concurrency: 1 })).rejects.toThrow('Err')
+  expect(await pExpectedError(pMap(input, mapper, { concurrency: 1 }))).toMatchInlineSnapshot('[Error: Err]')
 })
 
 test('immediately rejects when stopOnError is true', async () => {
-  await expect(pMap(errorInput1, mapper, { concurrency: 1 })).rejects.toThrow('foo')
-  await expect(pMap(errorInput2, mapper, { concurrency: 1 })).rejects.toThrow('bar')
+  expect(await pExpectedError(pMap(errorInput1, mapper, { concurrency: 1 }))).toMatchInlineSnapshot('[Error: foo]')
+  expect(await pExpectedError(pMap(errorInput2, mapper, { concurrency: 1 }))).toMatchInlineSnapshot('[Error: bar]')
 })
 
 test('aggregate errors when errorMode=THROW_AGGREGATED', async () => {
@@ -105,17 +105,23 @@ test('aggregate errors when errorMode=THROW_AGGREGATED', async () => {
   // should not throw
   await pMap(input, mapper, { concurrency: 1, errorMode })
 
-  await expect(pMap(errorInput1, mapper, { concurrency: 1, errorMode })).rejects.toThrow(
-    new AggregatedError(['foo', 'bar']),
-  )
-  await expect(pMap(errorInput2, mapper, { concurrency: 1, errorMode })).rejects.toThrow(
-    new AggregatedError(['bar', 'foo']),
-  )
+  expect(await pExpectedError(pMap(errorInput1, mapper, { concurrency: 1, errorMode }))).toMatchInlineSnapshot(`
+[AggregatedError: 2 errors:
+1. foo
+2. bar]`)
 
-  let err: AggregatedError
-  await pMap(errorInput1, mapper, { concurrency: 1, errorMode }).catch(_err => (err = _err))
+  expect(await pExpectedError(pMap(errorInput2, mapper, { concurrency: 1, errorMode }))).toMatchInlineSnapshot(`
+[AggregatedError: 2 errors:
+1. bar
+2. foo]`)
+
+  const err = await pExpectedError<AggregatedError>(pMap(errorInput1, mapper, { concurrency: 1, errorMode }))
   expect(err!.results).toEqual([20, 30])
-  expect(err!.errors).toEqual([new Error('foo'), new Error('bar')])
+  expect(err!.errors).toMatchInlineSnapshot(`
+[
+  [Error: foo],
+  [Error: bar],
+]`)
 })
 
 test('suppress errors when errorMode=SUPPRESS', async () => {
@@ -138,15 +144,26 @@ test('pBatch', async () => {
     errors: [],
   })
 
-  expect(await pBatch(errorInput1, mapper, { concurrency: 1 })).toEqual({
-    results: [20, 30],
-    errors: [new Error('foo'), new Error('bar')],
-  })
+  expect(await pBatch(errorInput1, mapper, { concurrency: 1 })).toMatchInlineSnapshot(`
+{
+  "errors": [
+    [Error: foo],
+    [Error: bar],
+  ],
+  "results": [
+    20,
+    30,
+  ],
+}`)
 
-  expect(await pBatch(errorInput3, mapper, { concurrency: 1 })).toEqual({
-    results: [],
-    errors: [new Error('one'), new Error('two')],
-  })
+  expect(await pBatch(errorInput3, mapper, { concurrency: 1 })).toMatchInlineSnapshot(`
+{
+  "errors": [
+    [Error: one],
+    [Error: two],
+  ],
+  "results": [],
+}`)
 })
 
 test('SKIP', async () => {

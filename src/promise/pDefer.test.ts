@@ -1,3 +1,4 @@
+import { pExpectedError } from '../error/try'
 import { pDefer } from './pDefer'
 
 test('pDefer', async () => {
@@ -7,5 +8,5 @@ test('pDefer', async () => {
 
   p = pDefer<string>()
   p.reject(new Error('abc'))
-  await expect(p).rejects.toThrow('abc')
+  expect(await pExpectedError(p)).toMatchInlineSnapshot('[Error: abc]')
 })

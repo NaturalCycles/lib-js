@@ -47,10 +47,9 @@ test('simpleStringSchema', () => {
   const s = jsonSchema.string().build()
 
   expect(s).toMatchInlineSnapshot(`
-Object {
+{
   "type": "string",
-}
-`)
+}`)
 })
 
 test('addressSchema', () => {
@@ -71,41 +70,38 @@ test('addressDBMJsonSchema', () => {
 test('oneOf', () => {
   const s = jsonSchema.allOf([jsonSchema.string(), jsonSchema.string().countryCode()])
   expect(s.build()).toMatchInlineSnapshot(`
-Object {
-  "allOf": Array [
-    Object {
+{
+  "allOf": [
+    {
       "type": "string",
     },
-    Object {
+    {
       "format": "countryCode",
       "type": "string",
     },
   ],
-}
-`)
+}`)
 })
 
 test('order', () => {
   const s = addressDBMJsonSchema.$schemaDraft7().$id('AddressDBM').build()
   expect(Object.keys(s)).toMatchInlineSnapshot(`
-Array [
+[
   "$schema",
   "$id",
   "type",
   "properties",
   "required",
   "additionalProperties",
-]
-`)
+]`)
 })
 
 test('buffer', () => {
   const s = jsonSchema.buffer()
   expect(s.build()).toMatchInlineSnapshot(`
-Object {
+{
   "instanceof": "Buffer",
-}
-`)
+}`)
 
   // const schema = AjvSchema.create(s) // this fails strangely!
   const schema = AjvSchema.create(s.build())

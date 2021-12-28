@@ -1,5 +1,5 @@
 import { inspect } from 'util'
-import { _errorToErrorObject, _stringifyAny } from '../index'
+import { _errorToErrorObject, _stringifyAny, pExpectedError } from '../index'
 import { HttpError } from './http.error'
 
 const throwHttpError = () => {
@@ -17,7 +17,7 @@ test('default error to match snapshot', async () => {
   })
 
   expect(throwHttpError).toThrow(HttpError)
-  await expect(throwHttpErrorAsync()).rejects.toThrow(HttpError)
+  expect(await pExpectedError(throwHttpErrorAsync())).toMatchInlineSnapshot(`[HttpError: error]`)
 })
 
 test('httpError printability', () => {

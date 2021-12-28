@@ -1,4 +1,5 @@
 import { _substringAfter, _substringAfterLast, _substringBefore, _substringBeforeLast } from '..'
+import { testEach } from '../test/test.util'
 import {
   _capitalize,
   _lowerFirst,
@@ -49,14 +50,14 @@ test('_substringBetweenLast', () => {
   expect(_substringBetweenLast(s, '/', '.')).toBe('someFile')
 })
 
-test.each([['aabbcc', 'b', '.', 'aa..cc']])(
+testEach([['aabbcc', 'b', '.', 'aa..cc']])(
   '_replaceAll %s %s %s',
   (s, find, replaceWith, result) => {
     expect(_replaceAll(s, find, replaceWith)).toBe(result)
   },
 )
 
-test.each([
+testEach([
   ['', ''],
   ['a', 'a'],
   ['a\nb', 'a<br>\nb'],

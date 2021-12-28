@@ -1,3 +1,4 @@
+import { pExpectedError } from '../error/try'
 import { pRetry } from './pRetry'
 
 function createFn(succeedOnAttempt: number) {
@@ -34,5 +35,5 @@ test('pRetry should throw on fail', async () => {
     delayMultiplier: 1,
     logAll: true,
   })
-  await expect(fn(1, 2, 3)).rejects.toThrowErrorMatchingInlineSnapshot(`"fail"`)
+  expect(await pExpectedError(fn(1, 2, 3))).toMatchInlineSnapshot('[Error: fail]')
 })

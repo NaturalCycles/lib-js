@@ -1,4 +1,4 @@
-import { InstanceId, pDelay } from '../index'
+import { InstanceId, pDelay, pExpectedError } from '../index'
 import { _LogMethod } from './logMethod.decorator'
 
 class C {
@@ -71,7 +71,8 @@ test('asyncMethodSuccess', async () => {
 })
 
 test('asyncMethodThrow', async () => {
-  await expect(c.asyncMethodThrow()).rejects.toThrow('MyError')
+  const err = await pExpectedError(c.asyncMethodThrow())
+  expect(err).toMatchInlineSnapshot('[Error: MyError]')
 })
 
 test('methodResultFn', () => {

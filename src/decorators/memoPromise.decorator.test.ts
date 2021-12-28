@@ -1,3 +1,4 @@
+import { pExpectedError } from '../error/try'
 import { _Memo } from './memo.decorator'
 
 class A {
@@ -34,12 +35,12 @@ class A {
 }
 
 beforeEach(() => {
-  jest.restoreAllMocks()
+  // jest.restoreAllMocks()
 })
 
 test('memo a', async () => {
   const a = new A()
-  a.func = jest.fn()
+  a.func = vi.fn()
 
   // first call
   let r = await a.a(2, 3)
@@ -62,7 +63,7 @@ test('memo a', async () => {
 
 test('MEMO_DROP_CACHE', async () => {
   const a = new A()
-  a.func = jest.fn()
+  a.func = vi.fn()
 
   // first call
   await a.a(2, 3)
@@ -80,12 +81,12 @@ test('memo b', async () => {
   // Should reject first 2 times, resolve next, cache next
 
   const a = new A()
-  a.func = jest.fn()
+  a.func = vi.fn()
 
   // first call
-  await expect(a.b(2, 3)).rejects.toThrowError('error_1')
+  expect(await pExpectedError(a.b(2, 3))).toMatchInlineSnapshot('[Error: error_1]')
   // second call
-  await expect(a.b(2, 3)).rejects.toThrowError('error_2')
+  expect(await pExpectedError(a.b(2, 3))).toMatchInlineSnapshot('[Error: error_2]')
 
   // third call - should resolve
   expect(await a.b(2, 3)).toBe(6)

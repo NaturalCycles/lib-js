@@ -1,5 +1,6 @@
 import { inspect } from 'util'
 import { AppError } from './app.error'
+import { pExpectedError } from './try'
 
 const throwAppError = () => {
   throw new AppError('error')
@@ -21,7 +22,7 @@ test('appError properties should be present', async () => {
   expect(r2.data).toEqual(data)
 
   expect(throwAppError).toThrow(AppError)
-  await expect(throwAppErrorAsync()).rejects.toThrow(AppError)
+  expect(await pExpectedError(throwAppErrorAsync())).toMatchInlineSnapshot('[AppError: error]')
 })
 
 test('appError should work when Error.captureStacktrace is n/a', () => {

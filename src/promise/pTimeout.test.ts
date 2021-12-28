@@ -23,14 +23,14 @@ test('pTimeoutFn options', async () => {
   expect(err).toMatchInlineSnapshot(`[TimeoutError: "custom name" timed out after 10 ms]`)
   expect(err).toBeInstanceOf(TimeoutError)
 
-  await expect(
+  expect(await pExpectedError(
     pTimeoutFn(fn, {
       timeout: 10,
       onTimeout: () => {
         throw new Error('custom error')
       },
-    })(),
-  ).rejects.toThrowErrorMatchingInlineSnapshot(`"custom error"`)
+    })()),
+  ).toMatchInlineSnapshot('[Error: custom error]')
 
   expect(await pTimeoutFn(fn, { timeout: 10, onTimeout: () => 'all good' })()).toBe('all good')
 })

@@ -82,15 +82,14 @@ test('anyToError', () => {
   const httpErrorObject = _anyToErrorObject(httpError)
   expect(httpErrorObject).not.toBeInstanceOf(Error)
   expect(_omit(httpErrorObject, ['stack'])).toMatchInlineSnapshot(`
-    Object {
-      "data": Object {
-        "httpStatusCode": 400,
-        "userFriendly": true,
-      },
-      "message": "la la",
-      "name": "HttpError",
-    }
-  `)
+{
+  "data": {
+    "httpStatusCode": 400,
+    "userFriendly": true,
+  },
+  "message": "la la",
+  "name": "HttpError",
+}`)
 
   // This is an "httpError", but packed in Error
   // With e.g name == 'HttpError'

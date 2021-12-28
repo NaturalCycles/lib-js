@@ -1,4 +1,4 @@
-import { pDelay } from '../index'
+import { pDelay, pExpectedError } from '../index'
 import { _Retry } from './retry.decorator'
 
 class C {
@@ -82,7 +82,7 @@ test('error1time', async () => {
 
 test('error2times retry once should throw', async () => {
   const a = new A()
-  await expect(a.error2times()).rejects.toThrow('custom_error')
+  expect(await pExpectedError(a.error2times())).toMatchInlineSnapshot('[Error: custom_error]')
 })
 
 test('error2times retry twice', async () => {

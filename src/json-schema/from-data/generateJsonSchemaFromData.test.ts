@@ -10,26 +10,25 @@ test('generateJsonSchemaFromData1', () => {
   const s = generateJsonSchemaFromData(data1)
   // console.log(s)
   expect(s).toMatchInlineSnapshot(`
-    Object {
-      "additionalProperties": true,
-      "properties": Object {
-        "a": Object {
-          "type": "string",
-        },
-        "b": Object {
-          "type": "boolean",
-        },
-        "c": Object {
-          "type": "null",
-        },
-        "n": Object {
-          "type": "number",
-        },
-      },
-      "required": Array [],
-      "type": "object",
-    }
-  `)
+{
+  "additionalProperties": true,
+  "properties": {
+    "a": {
+      "type": "string",
+    },
+    "b": {
+      "type": "boolean",
+    },
+    "c": {
+      "type": "null",
+    },
+    "n": {
+      "type": "number",
+    },
+  },
+  "required": [],
+  "type": "object",
+}`)
 
   const schema = AjvSchema.create(s)
   data1.forEach(r => schema.validate(r))

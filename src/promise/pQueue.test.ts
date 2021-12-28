@@ -1,5 +1,5 @@
 import { _range } from '../array/range'
-import { pDelay, pMap } from '../index'
+import { pDelay, pExpectedError, pMap } from '../index'
 import { PQueue } from './pQueue'
 
 test('PQueue', async () => {
@@ -20,11 +20,11 @@ test('PQueue', async () => {
 
   expect(results).toEqual(_range(1, 6))
 
-  await expect(
+  expect(await pExpectedError(
     q.push(async () => {
       throw new Error('error123')
-    }),
-  ).rejects.toThrow('error123')
+    })),
+  ).toMatchInlineSnapshot('[Error: error123]')
 
   await q.onIdle()
 })

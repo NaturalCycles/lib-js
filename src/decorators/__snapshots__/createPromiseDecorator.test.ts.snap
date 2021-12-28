@@ -1,29 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`_createPromiseDecorator 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      Object {
-        "args": Array [
-          2,
-        ],
-        "decoratorName": "Loader",
-        "decoratorParams": Object {
-          "type": "MY_TYPE",
-        },
-        "key": "run",
-        "res": 4,
-        "started": 1529539200000,
-        "target": C {},
-      },
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": 4,
-    },
-  ],
-}
-`;
+exports[`_createPromiseDecorator 1`] = `[Function]`;
